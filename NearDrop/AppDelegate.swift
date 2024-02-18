@@ -13,11 +13,18 @@ import NearbyShare
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate, MainAppDelegate{
 	private var statusItem:NSStatusItem?
 	private var activeIncomingTransfers:[String:TransferInfo]=[:]
-
+    @objc
+    public func sendClipboard() {
+        print("sending clipboard")
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 		let menu=NSMenu()
 		menu.addItem(withTitle: NSLocalizedString("VisibleToEveryone", value: "Visible to everyone", comment: ""), action: nil, keyEquivalent: "")
 		menu.addItem(withTitle: String(format: NSLocalizedString("DeviceName", value: "Device name: %@", comment: ""), arguments: [Host.current().localizedName!]), action: nil, keyEquivalent: "")
+        let sendClipboardItem = NSMenuItem(title: String(format: NSLocalizedString("SendClipboard", value: "Send Clipboard", comment: "")), action: #selector(sendClipboard), keyEquivalent: "")
+        sendClipboardItem.target = self
+        menu.addItem(sendClipboardItem)
 		menu.addItem(NSMenuItem.separator())
 		menu.addItem(withTitle: NSLocalizedString("Quit", value: "Quit NearDrop", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
 		statusItem=NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
